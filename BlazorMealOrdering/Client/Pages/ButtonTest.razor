@@ -1,0 +1,32 @@
+﻿@page "/buttontest"
+@page "/buttons"
+
+@*@inject IModalService _modalService*@
+
+<h3>@title</h3>
+
+<div class="form-group">
+    <div class="container">
+        <div class="btn-toolbar">
+
+            <CustomEditButtonComponent Caption="Show Message" OnClick="ChangeTitle" />
+            <CustomEditButtonComponent Caption="Edit Caption" Color="danger" Icon="pencil" IsSmall="false" />
+
+            <AddNewButtonComponent IsOutline="true" />
+
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    IModalService ModalService { get; set; }
+
+    private string title = "";
+    private void ChangeTitle()
+    {
+        title = "New Title";
+        ModalService.Show<Counter>("Counter Popop Page");
+    }
+}
