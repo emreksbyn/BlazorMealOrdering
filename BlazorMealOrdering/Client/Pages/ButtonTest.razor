@@ -1,7 +1,8 @@
 ﻿@page "/buttontest"
 @page "/buttons"
+@using BlazorMealOrdering.Client.Utils
 
-@*@inject IModalService _modalService*@
+@inject IModalService _modalService
 
 <h3>@title</h3>
 
@@ -9,8 +10,8 @@
     <div class="container">
         <div class="btn-toolbar">
 
-            <CustomEditButtonComponent Caption="Show Message" OnClick="ChangeTitle" />
-            <CustomEditButtonComponent Caption="Edit Caption" Color="danger" Icon="pencil" IsSmall="false" />
+            <CustomEditButtonComponent OnClick="@ChangeTitle" Caption="Show Message" />
+            <CustomEditButtonComponent OnClick="@ShowConfirmation" Caption="Edit Caption" Color="danger" Icon="pencil" IsSmall="false" />
 
             <AddNewButtonComponent IsOutline="true" />
 
@@ -19,14 +20,21 @@
 </div>
 
 @code {
-
     [CascadingParameter]
     IModalService ModalService { get; set; }
 
+    [Inject]
+    ModalManager ModalManager { get; set; }
+
     private string title = "";
-    private void ChangeTitle()
+    private async void ChangeTitle()
     {
-        title = "New Title";
-        ModalService.Show<Counter>("Counter Popop Page");
+        await ModalManager.ShowMessageAsync("Show Message Title", "Record Deleted", 3000);
+    }
+
+    private async Task ShowConfirmation()
+    {
+        bool response = await ModalManager.ConfirmationAsync("Confirmations", "Are you sure that it will be deleted?");
+        if (response) title = "Yes just clicked"; else title = "No just clicked";
     }
 }
