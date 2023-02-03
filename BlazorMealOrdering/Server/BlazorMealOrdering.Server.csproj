@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BlazorMealOrdering.Server.Data\BlazorMealOrdering.Server.Data.csproj" />
     <ProjectReference Include="..\Client\BlazorMealOrdering.Client.csproj" />
     <ProjectReference Include="..\Shared\BlazorMealOrdering.Shared.csproj" />
   </ItemGroup>

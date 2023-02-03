@@ -1,5 +1,10 @@
 using Blazored.Modal;
+using BlazorMealOrdering.Server.Data.Context;
+using BlazorMealOrdering.Server.Services.Extensions;
+using BlazorMealOrdering.Server.Services.Infrastructure;
+using BlazorMealOrdering.Server.Services.Managers;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 builder.Services.AddBlazoredModal();
+
+builder.Services.ConfigureMapping();
+
+builder.Services.AddDbContext<MealOrderinDbContext>(config =>
+{
+    string connectionString = "Server=localhost;Port=5432;Database=MealOrderingDb;User ID=postgres;Password=asd1234;Pooling=true";
+    config.UseNpgsql(connectionString);
+    config.EnableSensitiveDataLogging();
+});
+
+builder.Services.AddScoped<IUserService, UserManager>();
 
 var app = builder.Build();
 
