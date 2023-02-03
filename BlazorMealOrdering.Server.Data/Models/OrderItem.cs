@@ -4,8 +4,12 @@ namespace BlazorMealOrdering.Server.Data.Models
 {
     public class OrderItem : BaseModel
     {
-        public Guid CreatedUserId { get; set; }
+        public string Description { get; set; }
+
+        public Guid CreateUserId { get; set; }
+        public virtual User User { get; set; }
+
         public Guid OrderId { get; set; }
-        public string? Description { get; set; }
+        public virtual Order Order { get; set; }
     }
 }
