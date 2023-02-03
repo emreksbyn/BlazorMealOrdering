@@ -25,6 +25,8 @@ builder.Services.AddDbContext<MealOrderinDbContext>(config =>
 });
 
 builder.Services.AddScoped<IUserService, UserManager>();
+builder.Services.AddScoped<ISupplierService, SupplierManager>();
+builder.Services.AddScoped<IOrderService, OrderManager>();
 
 var app = builder.Build();
 

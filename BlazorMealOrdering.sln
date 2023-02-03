@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMealOrdering.Client",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMealOrdering.Shared", "BlazorMealOrdering\Shared\BlazorMealOrdering.Shared.csproj", "{090C72EE-E144-43D8-855E-9EB121BDE0D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMealOrdering.Server.Data", "BlazorMealOrdering.Server.Data\BlazorMealOrdering.Server.Data.csproj", "{BF4C1E18-1646-48B3-9AAE-6D091334CA41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorMealOrdering.Server.Data", "BlazorMealOrdering.Server.Data\BlazorMealOrdering.Server.Data.csproj", "{BF4C1E18-1646-48B3-9AAE-6D091334CA41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

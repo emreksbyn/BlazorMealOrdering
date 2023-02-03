@@ -1,7 +1,7 @@
 ﻿using BlazorMealOrdering.Server.Services.Infrastructure;
 using BlazorMealOrdering.Shared.Dtos;
 using BlazorMealOrdering.Shared.ResponseModels;
-using Microsoft.AspNetCore.Http;
+using BlazorMealOrdering.Shared.ResponseModels.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorMealOrdering.Server.Controllers
@@ -16,7 +16,7 @@ namespace BlazorMealOrdering.Server.Controllers
             _userService = userService;
         }
 
-        [HttpGet("get-all-users")]
+        [HttpGet("GetAllUsers")]
         public async Task<ServiceResponse<List<UserDto>>> GetAllUsers()
         {
             return new ServiceResponse<List<UserDto>>()
@@ -25,13 +25,38 @@ namespace BlazorMealOrdering.Server.Controllers
             };
         }
 
-        //[HttpPost("create-user")]
-        //public async Task<ServiceResponse<UserDto>> CreateUser(UserDto userDto)
-        //{
-        //    return new ServiceResponse<UserDto>()
-        //    {
-        //        Value = await _userService.CreateUser(userDto)
-        //    };
-        //}
+        [HttpPost("CreateUser")]
+        public async Task<ServiceResponse<UserDto>> CreateUser([FromBody] UserDto userDto)
+        {
+            return new ServiceResponse<UserDto>()
+            {
+                Value = await _userService.CreateUser(userDto)
+            };
+        }
+
+        [HttpPost("UpdateUser")]
+        public async Task<ServiceResponse<UserDto>> UpdateUser([FromBody] UserDto User)
+        {
+            return new ServiceResponse<UserDto>()
+            {
+                Value = await _userService.UpdateUser(User)
+            };
+        }
+
+        [HttpGet("GetUserById/{Id}")]
+        public async Task<ServiceResponse<UserDto>> GetUserById(Guid Id)
+        {
+            return new ServiceResponse<UserDto>()
+            {
+                Value = await _userService.GetUserById(Id)
+            };
+        }
+
+        [HttpPost("DeleteUserById")]
+        public async Task<BaseResponse> DeleteUserById([FromBody] Guid userId)
+        {
+            await _userService.DeleteUserById(userId);
+            return new BaseResponse();
+        }
     }
 }

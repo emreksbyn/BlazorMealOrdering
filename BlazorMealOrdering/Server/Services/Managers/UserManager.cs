@@ -21,8 +21,9 @@ namespace BlazorMealOrdering.Server.Services.Managers
         public async Task<List<UserDto>> GetAllUsers()
         {
             return await _context.Users
-                                  .Where(u => u.IsActive)
+                                  //.Where(u => u.IsActive)
                                   .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                                  .OrderBy(u => u.CreateDate)
                                   .ToListAsync();
         }
 
