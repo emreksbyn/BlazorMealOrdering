@@ -2,7 +2,6 @@
 using BlazorMealOrdering.Shared.Dtos;
 using BlazorMealOrdering.Shared.ResponseModels.Base;
 using BlazorMealOrdering.Shared.ResponseModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorMealOrdering.Server.Controllers
@@ -17,8 +16,6 @@ namespace BlazorMealOrdering.Server.Controllers
         {
             _orderService = OrderService;
         }
-
-
 
         #region Order Methods
 

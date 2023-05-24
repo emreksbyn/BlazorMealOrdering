@@ -3,8 +3,11 @@ using BlazorMealOrdering.Server.Data.Context;
 using BlazorMealOrdering.Server.Services.Extensions;
 using BlazorMealOrdering.Server.Services.Infrastructure;
 using BlazorMealOrdering.Server.Services.Managers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,28 @@ builder.Services.AddDbContext<MealOrderinDbContext>(config =>
 builder.Services.AddScoped<IUserService, UserManager>();
 builder.Services.AddScoped<ISupplierService, SupplierManager>();
 builder.Services.AddScoped<IOrderService, OrderManager>();
+
+
+// token dogrulama
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(opt =>
+{
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecurityKey"]))
+    };
+});
+
 
 var app = builder.Build();
 

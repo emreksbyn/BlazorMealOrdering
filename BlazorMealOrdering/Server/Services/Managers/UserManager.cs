@@ -5,6 +5,10 @@ using BlazorMealOrdering.Server.Data.Models;
 using BlazorMealOrdering.Server.Services.Infrastructure;
 using BlazorMealOrdering.Shared.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BlazorMealOrdering.Server.Services.Managers
 {
@@ -12,10 +16,12 @@ namespace BlazorMealOrdering.Server.Services.Managers
     {
         private readonly IMapper _mapper;
         private readonly MealOrderinDbContext _context;
-        public UserManager(IMapper mapper, MealOrderinDbContext context)
+        private readonly IConfiguration _configuration;
+        public UserManager(IMapper mapper, MealOrderinDbContext context, IConfiguration configuration)
         {
             _mapper = mapper;
             _context = context;
+            _configuration = configuration;
         }
 
         public async Task<List<UserDto>> GetAllUsers()
@@ -71,6 +77,30 @@ namespace BlazorMealOrdering.Server.Services.Managers
             int result = await _context.SaveChangesAsync();
 
             return result > 0;
+        }
+
+        public Task<string> Login(string email, string password)
+        {
+            // db kullanici dogrulamasi.
+
+            // token olusturma
+            string value = _configuration["Jwt:SecurityKey"];
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(value));
+            var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiry = DateTime.Now.AddDays(int.Parse(_configuration["Jwt:ExpiryInDays"].ToString()));
+
+            Claim[] claims = new[]
+            {
+                new Claim(ClaimTypes.Email, email)
+            };
+
+            string issuer = _configuration["Jwt:Issuer"];
+            string audience = _configuration["Jwt:Audience"];
+
+            var token = new JwtSecurityToken(issuer, audience, claims, null, expiry, credential);
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return tokenString;
         }
     }
 }

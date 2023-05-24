@@ -16,6 +16,15 @@ namespace BlazorMealOrdering.Server.Controllers
             _userService = userService;
         }
 
+        [HttpGet("Login")]
+        public ServiceResponse<string> Login(string email, string password)
+        {
+            return new ServiceResponse<string>()
+            {
+                Value = _userService.Login(email, password)
+            };
+        }
+
         [HttpGet("GetAllUsers")]
         public async Task<ServiceResponse<List<UserDto>>> GetAllUsers()
         {
